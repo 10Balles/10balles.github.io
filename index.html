@@ -49,6 +49,9 @@
   --c-cine: #0B7A75;
   --c-autre: #5D6778;
   --shadow: rgba(19, 26, 43, .14);
+  --tile-filter: grayscale(1) contrast(.9) brightness(1.05);
+  --tile-opacity: 1;
+  --cluster-halo: rgba(19, 26, 43, .16);
   --f-display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
   --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
   --f-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -60,6 +63,9 @@
     --land: #1B2433; --land-hover: #212C3E; --border-map: #34425B; --water: #23496E;
     --c-food: #FF7A52; --c-culture: #6FA2EE; --c-vue: #B48CF2; --c-balade: #4CC883; --c-soiree: #F06AAE; --c-cine: #4FC3BC; --c-autre: #9AA5B9;
     --shadow: rgba(0, 0, 0, .45);
+    --tile-filter: grayscale(1) invert(1) contrast(.85) brightness(.8);
+    --tile-opacity: .8;
+    --cluster-halo: rgba(232, 236, 243, .2);
     color-scheme: dark;
   }
 }
@@ -69,6 +75,9 @@
   --land: #1B2433; --land-hover: #212C3E; --border-map: #34425B; --water: #23496E;
   --c-food: #FF7A52; --c-culture: #6FA2EE; --c-vue: #B48CF2; --c-balade: #4CC883; --c-soiree: #F06AAE; --c-cine: #4FC3BC; --c-autre: #9AA5B9;
   --shadow: rgba(0, 0, 0, .45);
+  --tile-filter: grayscale(1) invert(1) contrast(.85) brightness(.8);
+  --tile-opacity: .8;
+  --cluster-halo: rgba(232, 236, 243, .2);
   color-scheme: dark;
 }
 
@@ -337,10 +346,14 @@ img { max-width: 100%; }
 .map-leaflet { width: 100%; height: min(68vh, 560px); background: var(--land); z-index: 0; }
 .leaflet-container { font-family: var(--f-body); }
 .leaflet-container a { color: var(--ink); }
-.dot-pin { display: block; width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+.map-tiles { filter: var(--tile-filter); opacity: var(--tile-opacity); }
+.leaflet-bar a, .leaflet-bar a:hover { background: var(--surface); color: var(--ink); border-bottom-color: var(--line); }
+.leaflet-bar { border-color: var(--line) !important; }
+.leaflet-container .leaflet-control-attribution { background: color-mix(in srgb, var(--surface) 85%, transparent); color: var(--muted); }
+.dot-pin { display: block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
 .dot-pin.sel { width: 24px; height: 24px; border-color: var(--ink); box-shadow: 0 0 0 6px rgba(255, 203, 31, .65); }
-.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-color: rgba(255, 203, 31, .55); }
-.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background-color: #FFCB1F; color: #131A2B; font-family: var(--f-mono); font-weight: 500; }
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large { background-color: var(--cluster-halo); }
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div { background-color: var(--ink); color: var(--surface); font-family: var(--f-mono); font-weight: 500; }
 .pick-leaflet { height: 230px; border-radius: 12px; border: 1px solid var(--line); z-index: 0; }
 .callout { display: grid; gap: 8px; padding: 14px 16px; margin-bottom: 12px; border-radius: 16px; background: var(--accent); color: var(--accent-ink); }
 .callout strong { font-family: var(--f-display); font-weight: 900; font-size: 24px; text-transform: uppercase; line-height: 1; }

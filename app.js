@@ -180,11 +180,11 @@ async function checkTeam() {
 /* ---------- Carte (Leaflet + OpenStreetMap) ---------- */
 const OSM = { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attr: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' };
 const FRANCE = [[42.2, -5.2], [51.2, 8.4]];
-const dotIcon = (p, sel) => L.divIcon({ className: "", html: `<span class="dot-pin${sel ? " sel" : ""}" style="background:${catHex(p.cat)}"></span>`, iconSize: sel ? [24, 24] : [16, 16], iconAnchor: sel ? [12, 12] : [8, 8] });
+const dotIcon = (p, sel) => L.divIcon({ className: "", html: `<span class="dot-pin${sel ? " sel" : ""}" style="background:${catHex(p.cat)}"></span>`, iconSize: sel ? [24, 24] : [12, 12], iconAnchor: sel ? [12, 12] : [6, 6] });
 function makeMap() {
   if (!window.L) return { setPins() {}, focus() {}, fit() {}, refresh() {} };
   const m = L.map("map", { zoomSnap: 0.5, scrollWheelZoom: true, worldCopyJump: false }).fitBounds(FRANCE);
-  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr }).addTo(m);
+  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr, className: "map-tiles" }).addTo(m);
   const group = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 42, spiderfyOnMaxZoom: true });
   m.addLayer(group);
   let markers = new Map(), sel = null;
@@ -216,7 +216,7 @@ function makeMap() {
 function makePickMap(el, start, onPick) {
   if (!window.L) return { set() {}, refresh() {} };
   const m = L.map(el, { zoomSnap: 0.5, scrollWheelZoom: false });
-  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr }).addTo(m);
+  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr, className: "map-tiles" }).addTo(m);
   let mk = null;
   const set = (lat, lng, zoom) => {
     if (lat == null) { if (mk) { m.removeLayer(mk); mk = null; } m.fitBounds(FRANCE); return; }
