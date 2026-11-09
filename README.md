@@ -6,7 +6,7 @@ Les bons plans à 10 € maximum, partout en France. Site collaboratif sans comp
 
 - **Le site** est une page statique (`index.html`, `app.js`, `config.js`), hébergée gratuitement par GitHub Pages.
 - **La base de données** est un projet Supabase gratuit : plans, notes, signalements et photos de preuve.
-- **La carte** utilise OpenStreetMap ; la recherche d'adresse utilise la Géoplateforme de l'IGN.
+- **La carte** utilise OpenStreetMap, avec le fond CARTO Positron si une clé CARTO gratuite est mise dans `config.js` (`cartoKey`) ; la recherche d'adresse utilise la Géoplateforme de l'IGN.
 - Si la base n'est pas joignable, le site affiche la base de départ (`data/plans.json`) en lecture seule.
 
 ## Mise en route (une seule fois)

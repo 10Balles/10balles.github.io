@@ -180,11 +180,28 @@ async function checkTeam() {
 /* ---------- Carte (Leaflet + OpenStreetMap) ---------- */
 const OSM = { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attr: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' };
 const FRANCE = [[42.2, -5.2], [51.2, 8.4]];
+/* Fond de carte : CARTO Positron / Dark Matter si une clé CARTO est dans config.js, sinon OpenStreetMap en gris */
+const CARTO_ATTR = OSM.attr + ' &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>';
+const darkMQ = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+const isDark = () => { const t = document.documentElement.dataset.theme; return t === "dark" || (t !== "light" && !!(darkMQ && darkMQ.matches)); };
+const osmLayer = () => L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr, className: "map-tiles" });
+function addBaseLayer(m) {
+  const key = String(CFG.cartoKey || "").trim();
+  if (!key) return osmLayer().addTo(m);
+  const url = () => `https://{s}.basemaps.cartocdn.com/${isDark() ? "dark_all" : "light_all"}/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(key)}`;
+  const layer = L.tileLayer(url(), { maxZoom: 20, subdomains: "abcd", attribution: CARTO_ATTR, className: "carto-tiles" }).addTo(m);
+  if (darkMQ && darkMQ.addEventListener) darkMQ.addEventListener("change", () => layer.setUrl(url()));
+  // Clé refusée ou service indisponible : on repasse sur OpenStreetMap
+  let errors = 0, loaded = false;
+  layer.on("tileload", () => { loaded = true; });
+  layer.on("tileerror", () => { if (!loaded && ++errors === 4) { m.removeLayer(layer); osmLayer().addTo(m); } });
+  return layer;
+}
 const dotIcon = (p, sel) => L.divIcon({ className: "", html: `<span class="dot-pin${sel ? " sel" : ""}" style="background:${catHex(p.cat)}"></span>`, iconSize: sel ? [24, 24] : [12, 12], iconAnchor: sel ? [12, 12] : [6, 6] });
 function makeMap() {
   if (!window.L) return { setPins() {}, focus() {}, fit() {}, refresh() {} };
   const m = L.map("map", { zoomSnap: 0.5, scrollWheelZoom: true, worldCopyJump: false }).fitBounds(FRANCE);
-  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr, className: "map-tiles" }).addTo(m);
+  addBaseLayer(m);
   const group = L.markerClusterGroup({ showCoverageOnHover: false, maxClusterRadius: 42, spiderfyOnMaxZoom: true });
   m.addLayer(group);
   let markers = new Map(), sel = null;
@@ -216,7 +233,7 @@ function makeMap() {
 function makePickMap(el, start, onPick) {
   if (!window.L) return { set() {}, refresh() {} };
   const m = L.map(el, { zoomSnap: 0.5, scrollWheelZoom: false });
-  L.tileLayer(OSM.url, { maxZoom: 19, attribution: OSM.attr, className: "map-tiles" }).addTo(m);
+  addBaseLayer(m);
   let mk = null;
   const set = (lat, lng, zoom) => {
     if (lat == null) { if (mk) { m.removeLayer(mk); mk = null; } m.fitBounds(FRANCE); return; }
