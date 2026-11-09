@@ -9,5 +9,5 @@ window.DIXBALLES = {
   instagramUrl: "https://www.instagram.com/10balle.s/",
   // Clé gratuite CARTO (https://carto.com/basemaps/apikey/) pour le fond de carte Positron.
   // Vide : la carte utilise OpenStreetMap en gris. Cette clé est publique, comme la clé Supabase.
-  cartoKey: ""
+  cartoKey: "cb1_559o_1_44283054002ef383fccf0b3e"
 };
