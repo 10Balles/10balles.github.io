@@ -17,7 +17,7 @@ Les bons plans à 10 € maximum, partout en France. Site collaboratif sans comp
 2. Colle le contenu de `supabase/schema.sql`, puis **Run**.
 3. Nouvelle requête : colle `supabase/seed.sql` (les plans de départ), puis **Run**.
 4. Nouvelle requête : colle `supabase/team.sql` après y avoir mis les e-mails de l'équipe, puis **Run**.
-5. **Authentication → URL Configuration** : mets l'adresse du site dans *Site URL* (`https://klmzip.github.io/10-Balles/`) et ajoute-la dans *Redirect URLs*. Sans ça, le lien de connexion de l'équipe ne ramène pas sur le site.
+5. **Authentication → URL Configuration** : mets l'adresse du site dans *Site URL* (`https://10balles.github.io`) et ajoute-la dans *Redirect URLs*. Sans ça, le lien de connexion de l'équipe ne ramène pas sur le site.
 6. **Project Settings → API** : copie la *Project URL* et la clé *publishable* (ou *anon*) dans `config.js`. Ne mets jamais la clé *secret* ou *service_role*.
 
 ### 2. GitHub Pages
